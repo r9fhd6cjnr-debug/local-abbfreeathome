@@ -142,8 +142,9 @@ class Base:
                 datapoint=self._outputs[_io_key]
             )
 
-        if _callback_attribute and self._callbacks[_callback_attribute]:
-            for callback in self._callbacks[_callback_attribute]:
+        # Channels may receive notifications before a consumer subscribes.
+        if _callback_attribute:
+            for callback in self._callbacks.get(_callback_attribute, ()):
                 callback()
 
     def register_callback(
